@@ -46,3 +46,7 @@ app.*.map.json
 
 scripts/serviceAccountKey.sjon
 scripts/
+
+# Firebase config — contains API keys, generate locally with `flutterfire configure`
+lib/firebase_options.dart
+android/app/google-services.json
