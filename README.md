@@ -1,3 +1,3 @@
 # wukwembege
 
-A new Flutter project.
+ini versi firebase integrationnya
