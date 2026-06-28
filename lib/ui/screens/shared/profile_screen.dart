@@ -70,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                         ? [
                             KpiTile(value: '${profile.events ?? 0}', label: 'Events'),
                             KpiTile(value: '${profile.vendors ?? 0}', label: 'Vendors'),
-                            const KpiTile(value: '4.9', label: 'Rating'),
+                            KpiTile(value: '${profile.rating ?? 0}', label: 'Rating'),
                           ]
                         : [
                             KpiTile(value: '${profile.rating ?? 0}', label: 'Rating'),

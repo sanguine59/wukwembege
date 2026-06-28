@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
+import 'data/api_client.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/event_repository.dart';
 import 'data/repositories/user_repository.dart';
-import 'firebase_options.dart';
 import 'theme.dart';
 import 'ui/screens/auth/onboarding_screen.dart';
 import 'ui/screens/shell.dart';
@@ -13,11 +12,11 @@ import 'viewmodels/app_viewmodel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
 
-  final auth = AuthRepository();
-  final events = EventRepository();
-  final users = UserRepository();
+  final api = ApiClient();
+  final auth = AuthRepository(api);
+  final events = EventRepository(api);
+  final users = UserRepository(api);
 
   runApp(WukwembegeApp(
     vm: AppViewModel(auth: auth, events: events, users: users),

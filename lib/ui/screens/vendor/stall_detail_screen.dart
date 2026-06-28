@@ -21,7 +21,6 @@ class StallDetailScreen extends StatelessWidget {
     final ev = vm.events.where((e) => e.id == eventId).firstOrNull;
     final stall = ev?.stalls.where((s) => s.id == stallId).firstOrNull;
     if (ev == null || stall == null) return const Scaffold(body: Center(child: Text('Stall not found')));
-    final bio = '${stall.name} serves ${stall.cuisine.toLowerCase()} — a regular on the local food-stall circuit, known for quick service and a tidy, self-powered setup.';
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
@@ -53,16 +52,6 @@ class StallDetailScreen extends StatelessWidget {
                         const SizedBox(height: 10),
                         StatusBadge.stall(stall.status),
                       ]),
-                      const SizedBox(height: 18),
-                      const KpiRow(tiles: [
-                        KpiTile(value: '4.8', label: 'Rating'),
-                        KpiTile(value: '212', label: 'Reviews'),
-                        KpiTile(value: '14', label: 'Events'),
-                      ]),
-                      const SizedBox(height: 18),
-                      const Text('About', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12.5, color: AppColors.text2)),
-                      const SizedBox(height: 6),
-                      Text(bio, style: const TextStyle(fontSize: 14, height: 1.6, color: AppColors.text2, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 18),
                       _kvRow('user', stall.owner, 'Owner & contact'),
                       const SizedBox(height: 8),

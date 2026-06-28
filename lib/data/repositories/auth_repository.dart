@@ -1,24 +1,49 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+import '../api_client.dart';
+
+class AuthUser {
+  final String uid;
+  const AuthUser(this.uid);
+}
 
 class AuthRepository {
-  final FirebaseAuth _auth;
-  AuthRepository([FirebaseAuth? auth]) : _auth = auth ?? FirebaseAuth.instance;
+  final ApiClient _api;
+  final _controller = StreamController<AuthUser?>.broadcast();
+  AuthUser? _current;
 
-  Stream<User?> authChanges() => _auth.authStateChanges();
-  User? get current => _auth.currentUser;
+  AuthRepository(this._api);
 
-  Future<User> signIn(String email, String password) async {
-    final c = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    return c.user!;
+  Stream<AuthUser?> authChanges() async* {
+    yield _current;
+    yield* _controller.stream;
   }
 
-  Future<User> register(String email, String password) async {
-    final c = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    return c.user!;
+  AuthUser? get current => _current;
+
+  Future<AuthUser> signIn(String email, String password) async {
+    final res = await _api.post('/auth/login', {'email': email, 'password': password});
+    return _accept(res);
   }
 
-  Future<void> signOut() => _auth.signOut();
+  Future<AuthUser> register(String email, String password) async {
+    final res = await _api.post('/auth/register', {'email': email, 'password': password});
+    return _accept(res);
+  }
+
+  AuthUser _accept(dynamic res) {
+    _api.token = res['token'] as String;
+    final user = AuthUser(res['uid'] as String);
+    _current = user;
+    _controller.add(user);
+    return user;
+  }
+
+  Future<void> signOut() async {
+    _api.token = null;
+    _current = null;
+    _controller.add(null);
+  }
 
   Future<void> sendPasswordReset(String email) =>
-      _auth.sendPasswordResetEmail(email: email);
+      _api.post('/auth/password-reset', {'email': email});
 }

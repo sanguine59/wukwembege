@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/profile.dart';
 import '../models/event.dart';
@@ -24,7 +23,7 @@ class AppViewModel extends ChangeNotifier {
   late final StreamSubscription _authSub;
   StreamSubscription? _profileSub, _eventsSub, _browseSub, _partSub, _notifsSub;
 
-  User? _user;
+  AuthUser? _user;
   Role _role = Role.organizer;
   Profile? _profile;
   bool _authed = false;
@@ -51,7 +50,7 @@ class AppViewModel extends ChangeNotifier {
     return null;
   }
 
-  Future<void> _onAuthChanged(User? u) async {
+  Future<void> _onAuthChanged(AuthUser? u) async {
     _user = u;
     if (u == null) {
       _authed = false;
@@ -150,9 +149,9 @@ class AppViewModel extends ChangeNotifier {
   Future<void> deleteEvent(String id) => _eventsRepo.delete(id);
 
   String _nextSpot(Event ev) {
-    final used = ev.stalls.where((s) => s.spot.isNotEmpty && s.spot != '—').map((s) => s.spot).toSet();
+    final used = ev.stalls.where((s) => s.spot.isNotEmpty && s.spot != '-').map((s) => s.spot).toSet();
     final firstReal = ev.stalls.firstWhere(
-      (s) => s.spot.isNotEmpty && s.spot != '—',
+      (s) => s.spot.isNotEmpty && s.spot != '-',
       orElse: () => const Stall(id: '', name: '', cuisine: '', owner: '', status: StallStatus.pending, spot: 'A1', fee: 0),
     );
     final prefix = firstReal.spot.isNotEmpty ? firstReal.spot[0] : 'A';
@@ -166,8 +165,8 @@ class AppViewModel extends ChangeNotifier {
   Future<void> addStall(String eventId, Stall stall) async {
     final ev = _events.firstWhere((e) => e.id == eventId);
     final spot = stall.status == StallStatus.confirmed
-        ? (stall.spot.isNotEmpty && stall.spot != '—' ? stall.spot : _nextSpot(ev))
-        : '—';
+        ? (stall.spot.isNotEmpty && stall.spot != '-' ? stall.spot : _nextSpot(ev))
+        : '-';
     final newStall = Stall(
       id: _uid('s'), name: stall.name, cuisine: stall.cuisine, owner: stall.owner,
       status: stall.status, spot: spot, fee: ev.fee,
@@ -191,8 +190,8 @@ class AppViewModel extends ChangeNotifier {
     final updated = ev.stalls.map((s) {
       if (s.id != stallId) return s;
       final spot = status == StallStatus.confirmed
-          ? ((s.spot.isEmpty || s.spot == '—') ? _nextSpot(ev) : s.spot)
-          : '—';
+          ? ((s.spot.isEmpty || s.spot == '-') ? _nextSpot(ev) : s.spot)
+          : '-';
       return s.copyWith(status: status, spot: spot);
     }).toList();
     await _eventsRepo.setStalls(eventId, updated);

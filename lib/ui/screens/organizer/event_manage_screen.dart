@@ -240,7 +240,7 @@ class _EventManageScreenState extends State<EventManageScreen> {
   void _stallForm(BuildContext ctx, Event ev, AppViewModel vm, Stall? editing) {
     final name = TextEditingController(text: editing?.name ?? '');
     final owner = TextEditingController(text: editing?.owner ?? '');
-    final spot = TextEditingController(text: editing?.spot == '—' ? '' : (editing?.spot ?? ''));
+    final spot = TextEditingController(text: editing?.spot == '-' ? '' : (editing?.spot ?? ''));
     String cuisine = editing?.cuisine ?? 'Street food';
     StallStatus status = editing?.status ?? StallStatus.confirmed;
 
@@ -283,7 +283,7 @@ class _EventManageScreenState extends State<EventManageScreen> {
                 final s = Stall(
                   id: editing?.id ?? 's',
                   name: name.text, cuisine: cuisine, owner: owner.text,
-                  status: status, spot: spot.text.isEmpty ? '—' : spot.text, fee: ev.fee,
+                  status: status, spot: spot.text.isEmpty ? '-' : spot.text, fee: ev.fee,
                 );
                 if (editing != null) {
                   await vm.updateStall(ev.id, s);

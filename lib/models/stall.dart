@@ -56,7 +56,7 @@ class Stall {
         cuisine: (m['cuisine'] ?? '') as String,
         owner: (m['owner'] ?? '') as String,
         status: stallStatusFromString((m['status'] ?? 'pending') as String),
-        spot: (m['spot'] ?? '—') as String,
+        spot: (m['spot'] ?? '-') as String,
         fee: (m['fee'] ?? 0) as int,
       );
 }

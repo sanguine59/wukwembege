@@ -112,7 +112,7 @@ class VendorHomeScreen extends StatelessWidget {
                           child: Row(children: [
                             const AppIcon('check-circle', size: 18, color: AppColors.green),
                             const SizedBox(width: 9),
-                            Expanded(child: Text("You're in — pitch ${m.part.spot ?? ''}", style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.w800, fontSize: 13))),
+                            Expanded(child: Text("You're in - pitch ${m.part.spot ?? ''}", style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.w800, fontSize: 13))),
                             const AppIcon('qr', size: 18, color: AppColors.green),
                           ]),
                         ),

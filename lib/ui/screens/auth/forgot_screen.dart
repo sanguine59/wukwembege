@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/api_client.dart';
 import '../../../theme.dart';
 import '../../../viewmodels/app_viewmodel.dart';
 import '../../widgets/app_icon.dart';
@@ -87,7 +88,8 @@ class _ForgotScreenState extends State<ForgotScreen> {
             } catch (e) {
               if (mounted) {
                 setState(() => _loading = false);
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not send reset email: $e')));
+                final msg = e is ApiException ? e.message : 'Could not send reset email: $e';
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
               }
             }
           },

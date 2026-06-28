@@ -69,7 +69,7 @@ class _EventEditScreenState extends State<EventEditScreen> {
         desc: _desc.text,
       );
       await _vm.addEvent(ev);
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Event created — start inviting vendors')));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Event created - start inviting vendors')));
     }
     if (mounted) Navigator.of(context).pop();
   }
